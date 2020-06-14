@@ -1,0 +1,54 @@
+#!/bin/bash
+
+DOTFILES_PATH="$HOME/.dotfiles"
+PUSH=false
+ACTION=false
+
+while [[ $# -gt 0 ]]
+do
+key="$1"
+
+case $key in
+  a|add)
+  ACTION="add"
+  shift
+  ;;
+  p|push)
+  PUSH=True
+  shift
+  ;;
+  -p|--push)
+  PUSH=True
+  ;;
+  *)
+  MESSAGE="$1"
+  shift
+  ;;
+esac
+shift
+done
+
+pushd $DOTFILES_PATH
+
+if [[ $ACTION == "add" ]]
+then
+  for f in `git diff --name-only`
+  do
+    if [[ $f == *"iterm2_preferences"* ]]
+    then
+      git add "iterm2_preferences/"
+      git commit -m "add iterm2 preferences changes"
+    fi
+  done
+  git add --all
+  git commit 
+fi
+
+if $PUSH
+then
+  git push origin master
+fi
+
+fresh
+
+popd

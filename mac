@@ -1,0 +1,245 @@
+#!/bin/sh
+
+# Welcome to the thoughtbot laptop script!
+# Be prepared to turn your laptop (or desktop, no haters here)
+# into an awesome development machine.
+
+fancy_echo() {
+  local fmt="$1"; shift
+
+  # shellcheck disable=SC2059
+  printf "\n$fmt\n" "$@"
+}
+
+set -e
+
+brew_install_or_upgrade() {
+  if brew_is_installed "$1"; then
+    if brew_is_upgradable "$1"; then
+      fancy_echo "Upgrading %s ..." "$1"
+      brew upgrade "$@"
+    else
+      fancy_echo "Already using the latest version of %s. Skipping ..." "$1"
+    fi
+  else
+    fancy_echo "Installing %s ..." "$1"
+    brew install "$@"
+  fi
+}
+
+brew_is_installed() {
+  local name="$(brew_expand_alias "$1")"
+
+  brew list -1 | grep -Fqx "$name"
+}
+
+brew_is_upgradable() {
+  local name="$(brew_expand_alias "$1")"
+
+  ! brew outdated --quiet "$name" >/dev/null
+}
+
+brew_tap() {
+  brew tap "$1" 2> /dev/null
+}
+
+brew_expand_alias() {
+  brew info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
+brew_launchctl_restart() {
+  local name="$(brew_expand_alias "$1")"
+  local domain="homebrew.mxcl.$name"
+  local plist="$domain.plist"
+
+  fancy_echo "Restarting %s ..." "$1"
+  mkdir -p "$HOME/Library/LaunchAgents"
+  ln -sfv "/usr/local/opt/$name/$plist" "$HOME/Library/LaunchAgents"
+
+  if launchctl list | grep -Fq "$domain"; then
+    launchctl unload "$HOME/Library/LaunchAgents/$plist" >/dev/null
+  fi
+  launchctl load "$HOME/Library/LaunchAgents/$plist" >/dev/null
+}
+
+gem_install_or_update() {
+  if gem list "$1" --installed > /dev/null; then
+    fancy_echo "Updating %s ..." "$1"
+    gem update "$@"
+  else
+    fancy_echo "Installing %s ..." "$1"
+    gem install "$@"
+    rbenv rehash
+  fi
+}
+
+brew_cask_expand_alias() {
+  brew cask info "$1" 2>/dev/null | head -1 | awk '{gsub(/:/, ""); print $1}'
+}
+
+brew_cask_is_installed() {
+  local NAME=$(brew_cask_expand_alias "$1")
+  brew cask list -1 | grep -Fqx "$NAME"
+}
+
+brew_cask_install() {
+  if ! brew_cask_is_installed "$1"; then
+    brew cask install "$@"
+  fi
+}
+
+brew_cask_install_or_upgrade() {
+  if brew_cask_is_installed "$1"; then
+    fancy_echo "$1 is already installed, brew cask upgrade is not yet implemented"
+  else
+    brew cask install "$@"
+  fi
+}
+
+freshshell_install_or_upgrade() {
+  if [ ! -d "$HOME/.fresh" ]; then
+    bash -c "`curl -sL get.freshshell.com`"
+    if [ -f "$HOME/.dotfiles/freshrc" ]; then
+      ln -sf "$HOME/.dotfiles/freshrc" "$HOME/.freshrc"
+    fi
+  fi
+  source "$HOME/.fresh/build/shell.sh"
+  fresh install
+}
+
+if type xcode-select >&- && xpath=$( xcode-select --print-path ) &&
+   test -d "${xpath}" && test -x "${xpath}" ; then
+  echo "xcode installed correctly"
+else
+  xcode-select --install
+fi
+
+if ! command -v brew >/dev/null; then
+  fancy_echo "Installing Homebrew ..."
+    curl -fsS \
+      'https://raw.githubusercontent.com/Homebrew/install/master/install' | ruby
+
+    #append_to_zshrc '# recommended by brew doctor'
+
+    # shellcheck disable=SC2016
+    #append_to_zshrc 'export PATH="/usr/local/bin:$PATH"' 1
+
+    export PATH="/usr/local/bin:$PATH"
+else
+  fancy_echo "Homebrew already installed. Skipping ..."
+fi
+
+fancy_echo "Updating Homebrew formulas ..."
+brew update
+
+brew_install_or_upgrade 'git'
+brew_install_or_upgrade 'bash-completion'
+brew_install_or_upgrade 'the_silver_searcher'
+brew_install_or_upgrade 'vim'
+brew_tap 'neovim/neovim'
+brew_install_or_upgrade 'neovim'
+brew_install_or_upgrade 'ctags'
+brew_install_or_upgrade 'hub'
+brew_install_or_upgrade 'wget'
+brew_install_or_upgrade 'mosh'
+brew_install_or_upgrade 'jq'
+brew_install_or_upgrade 'kube-ps1'
+brew_install_or_upgrade 'kubectx'
+brew_install_or_upgrade 'coreutils'
+
+#brew_install_or_upgrade 'imagemagick'
+
+brew_install_or_upgrade 'openssl'
+brew unlink openssl && brew link openssl --force
+
+#brew_install_or_upgrade 'libyaml'
+#brew_install_or_upgrade 'python'
+#brew_install_or_upgrade 'mysql'
+#brew_install_or_upgrade 'postgresql'
+#brew_install_or_upgrade 'mongodb'
+
+#brew_install_or_upgrade 'mr'
+brew_install_or_upgrade 'awscli'
+#brew_install_or_upgrade 'nvm'
+brew_install_or_upgrade 'asdf'
+
+brew_tap 'caskroom/cask'
+
+brew_tap 'caskroom/versions'
+
+#brew_cask_install_or_upgrade 'dropbox'
+#brew_cask_install_or_upgrade 'google-chrome'
+#brew_cask_install_or_upgrade 'firefox'
+brew_cask_install_or_upgrade 'evernote'
+#brew_cask_install_or_upgrade 'shiftit'
+#brew_cask_install_or_upgrade 'rowanj-gitx'
+#brew_cask_install_or_upgrade 'diffmerge'
+#brew_cask_install_or_upgrade 'screenhero'
+brew_cask_install_or_upgrade 'flux'
+#brew_cask_install_or_upgrade 'dragondisk'
+#brew_cask_install_or_upgrade 'virtualbox'
+#brew_cask_install_or_upgrade 'vagrant'
+#brew_cask_install_or_upgrade 'terraform'
+#brew_cask_install_or_upgrade 'arq'
+#brew_cask_install_or_upgrade 'cyberduck'
+#brew_cask_install_or_upgrade 'adium'
+brew_cask_install_or_upgrade 'fantastical'
+brew_cask_install_or_upgrade 'slack'
+brew_cask_install_or_upgrade 'harvest'
+#brew_cask_install_or_upgrade 'github-desktop'
+brew_cask_install_or_upgrade 'gas-mask'
+brew_cask_install_or_upgrade 'tunnelblick'
+brew_cask_install_or_upgrade 'vlc'
+brew_cask_install_or_upgrade 'sequel-pro'
+brew_cask_install_or_upgrade 'tripmode'
+brew_cask_install_or_upgrade 'iterm2'
+brew_cask_install_or_upgrade 'whatsapp'
+brew_cask_install_or_upgrade 'spotify'
+
+brew_tap 'homebrew/completions'
+#brew_install_or_upgrade 'vagrant-completion'
+gem install pygments.rb
+#brew_install_or_upgrade 'ghi' # github issues https://github.com/stephencelis/ghi
+#brew_install_or_upgrade 'tree'
+#brew_install_or_upgrade 'graphviz'
+
+# Install Docker
+#brew_install_or_upgrade 'docker-completion'
+
+# install not working
+#brew reinstall asciidoc --with-docbook-xsl
+#export XML_CATALOG_FILES=/usr/local/etc/xml/catalog
+#brew_install_or_upgrade 'lastpass-cli' '--with-pinentry'
+#brew_install_or_upgrade 'bash-git-prompt'
+
+#brew_install_or_upgrade 'tmux'
+
+#brew_install_or_upgrade 'ansible'
+
+# tmux workspace manager
+# http://tmuxp.readthedocs.io/en/latest/index.html
+#pip install tmuxp -U
+
+# Allows tmux access to system clipboard
+#brew_install_or_upgrade 'reattach-to-user-namespace'
+
+# GO
+#brew_install_or_upgrade 'go'
+
+freshshell_install_or_upgrade
+
+fancy_echo "Manual Install:"
+
+site_list=(
+  airmailapp.com
+  wunderlist.com
+  docker.com
+  keybase.io
+)
+for site in ${site_list[@]}; do
+  fancy_echo "http://$i/"
+done
+
+# Verify
+brew doctor
+

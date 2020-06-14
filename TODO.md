@@ -1,0 +1,6 @@
+- [ ] source wallpaper directory
+- [ ] cronjob (backup .envrc files)
+- [ ] expire ssh keys
+- [ ] track ssh key usage
+- [ ] keybase restore/backup
+- [ ] cleanup mac/linux install scripts

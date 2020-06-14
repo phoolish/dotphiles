@@ -1,0 +1,17 @@
+# Get the aliases and functions
+if [ -f ~/.bashrc ]; then
+        . ~/.bashrc
+fi
+
+[[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
+
+source "$HOME/.fresh/build/shell.sh"
+command -v direnv  >/dev/null 2>&1 && eval "$(direnv hook bash)"
+command -v keychain  >/dev/null 2>&1 && eval $(keychain --eval --quiet --confhost)
+# http://unix.stackexchange.com/a/90869
+# Add ssh keys on login
+#if [ -z "$SSH_AUTH_SOCK" ] ; then
+#  eval `ssh-agent -s`
+#  ssh-add
+#fi
+

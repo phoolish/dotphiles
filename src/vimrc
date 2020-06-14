@@ -1,0 +1,57 @@
+set nocompatible
+filetype off
+
+set rtp+=~/.vim/bundle/Vundle.vim
+call vundle#begin()
+
+Plugin 'VundleVim/Vundle.vim'
+
+Plugin 'tpope/vim-fugitive'
+Bundle 'altercation/vim-colors-solarized'
+Plugin 'airblade/vim-gitgutter'
+Plugin 'godlygeek/tabular'
+Plugin 'plasticboy/vim-markdown'
+Bundle 'christoomey/vim-tmux-navigator'
+Plugin 'fatih/vim-go'
+
+call vundle#end()
+filetype plugin indent on
+
+" Solarized
+syntax enable
+set number
+set background=dark
+let g:solarized_termcolors = 256
+colorscheme solarized
+
+" Vim Markdown
+let g:vim_markdown_folding_disabled = 1
+
+" line numbering
+set relativenumber
+set number
+
+" tabs
+set tabstop=2
+set shiftwidth=2
+set expandtab
+autocmd FileType go :setlocal shiftwidth=4 tabstop=4 softtabstop=4
+
+" Removing trailing white spaces
+function! <SID>StripTrailingWhitespaces()
+    " Preparation: save last search, and cursor position.
+    let _s=@/
+    let l = line(".")
+    let c = col(".")
+    " Do the business:
+    %s/\s\+$//e
+    " Clean up: restore previous search history, and cursor position
+    let @/=_s
+    call cursor(l, c)
+endfunction
+
+autocmd BufWritePre * :call <SID>StripTrailingWhitespaces()
+
+" Highligh line 80
+set columns=80 wrap
+set colorcolumn=81
