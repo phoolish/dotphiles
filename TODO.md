@@ -4,3 +4,4 @@
 - [ ] track ssh key usage
 - [ ] keybase restore/backup
 - [ ] cleanup mac/linux install scripts
+- [ ] inputrc mac stuff

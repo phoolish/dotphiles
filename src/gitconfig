@@ -1,6 +1,6 @@
 [core]
   pager = "/usr/share/git/diff-highlight/diff-highlight | /usr/bin/less -RciqMSj5"
-  editor = nvim
+  editor = vim
   excludesfile = ~/.gitignore_global
 
 [color "diff"]
@@ -40,7 +40,7 @@
 [diff]
   tool = prompt
 [mergetool]
-  path = nvim
+  path = vimw
 
 [format]
   pretty=%C(yellow)%h %Cgreen%an%Creset %s %C(red)(%cr)%Creset

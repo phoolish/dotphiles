@@ -1,12 +1,11 @@
 source "$HOME/.dotfiles/shell/functions/ps1_aws.sh"
-if [[ "$(uname)" == "Darwin" ]]; then
-  source $(brew --prefix)/opt/kube-ps1/share/kube-ps1.sh
-  export KUBE_PS1_NS_ENABLE=true
-  export KUBE_PS1_PREFIX=" ("
-  export KUBE_PS1_DIVIDER="/"
-  export KUBE_PS1_SYMBOL_ENABLE=false
-  export KUBE_PS1_SYMBOL_USE_IMG=true
-fi
+source "$HOME/.fresh/build/vendor/kube-ps1.sh"
+
+export KUBE_PS1_NS_ENABLE=true
+export KUBE_PS1_PREFIX=" ("
+export KUBE_PS1_DIVIDER="/"
+export KUBE_PS1_SYMBOL_ENABLE=false
+export KUBE_PS1_SYMBOL_USE_IMG=true
 
 function prompt_callback {
   echo -n "$(ps1_aws)$(kube_ps1)"

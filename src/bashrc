@@ -1,4 +1,13 @@
 # Source global definitions
 if [ -f /etc/bashrc ]; then
-        . /etc/bashrc
+  . /etc/bashrc
+fi
+
+source "$HOME/.bash_aliases"
+source "$HOME/.fresh/build/shell.sh"
+
+if [ -d $HOME/.bashrc.d ]; then
+  for f in ~/.bashrc.d/*; do 
+    source $f
+  done
 fi
