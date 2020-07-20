@@ -1,0 +1,11 @@
+apt_install() {
+  sudo apt install -y -q $1
+}
+
+apt_install git
+apt_install vim
+
+
+# GUI Stuff
+apt_install network-manager-openvpn-gnome
+apt_install xclip
