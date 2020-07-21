@@ -1,13 +1,13 @@
 #!/bin/bash
-if [ -d "$HOME/.asdf" ]; then
-  asdf update
-else
+if ! [ -d "$HOME/.asdf" ]; then
   git clone https://github.com/asdf-vm/asdf.git ~/.asdf --branch v0.7.8
 fi
 
+source $HOME/.dotfiles/shell/asdf.sh
+
 ln -sf ~/.dotfiles/src/tool-versions ~/.tool-versions
 
-source $HOME/.asdf/asdf.sh
+asdf update
 
 while IFS=read -r line; do
   local linearray=$(line)
