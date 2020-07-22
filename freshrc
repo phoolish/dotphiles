@@ -15,6 +15,8 @@ fresh jonmosco/kube-ps1 kube-ps1.sh --file=vendor/kube-ps1.sh
 
 fresh src/inputrc --file
 
+fresh so-fancy/diff-so-fancy . --file=vendor/diff-so-fancy/
+
 fresh src/gitconfig --file
 if [[ "$(uname)" == "Darwin" ]]; then
   fresh src/gitconfig.mac --file=~/.gitconfig

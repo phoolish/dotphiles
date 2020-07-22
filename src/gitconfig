@@ -1,14 +1,20 @@
 [core]
-  pager = "/usr/share/git/diff-highlight/diff-highlight | /usr/bin/less -RciqMSj5"
+  pager = "~/.fresh/source/so-fancy/diff-so-fancy/diff-so-fancy | less --tabs=4 -RFX"
   editor = vim
   excludesfile = ~/.gitignore_global
 
+[color]
+  diff = auto
+  branch = auto
+  status = auto
+  ui = always
+
 [color "diff"]
-  commit = green
-  meta = yellow
-  frag = cyan
-  old = red
-  new = green
+  commit = yellow bold
+  meta = 11
+  frag = magenta bold
+  old = red bold
+  new = green bold
   whitespace = red reverse
 
 [color "diff-highlight"]
@@ -16,14 +22,8 @@
   oldHighlight = red bold 52
   newNormal = green bold
   newHighlight = green bold 22
-`
-[init]
 
-[color]
-  diff = auto
-  branch = auto
-  status = auto
-  ui = always
+[init]
 
 [push]
   default = current
