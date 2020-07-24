@@ -5,14 +5,13 @@ fi
 
 source $HOME/.dotfiles/shell/asdf.sh
 
-ln -sf ~/.dotfiles/src/tool-versions ~/.tool-versions
-
 asdf update
 
-while IFS=read -r line; do
-  local linearray=$(line)
-  local plugin=${linearray[0]}
+while IFS= read -r line; do
+  plugin=$(echo $line | cut -d' ' -f 1)
   asdf plugin-add $plugin
-done < ~/.tool-versions
+done < ~/.dotfiles/src/tool-versions
+
+ln -sf ~/.dotfiles/src/tool-versions ~/.tool-versions
 
 asdf plugin update --all
