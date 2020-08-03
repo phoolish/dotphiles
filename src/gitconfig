@@ -24,6 +24,7 @@
   newHighlight = green bold 22
 
 [init]
+  defaultBranch = main
 
 [push]
   default = current
