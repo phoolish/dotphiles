@@ -60,14 +60,12 @@ fresh src/rspec --file
 
 fresh https://gist.github.com/OutlawAndy/3840449.git prettify_json.rb --bin=~/bin/prettify_json
 
-# Get https://github.com/icefox/git-hooks binary
-fresh icefox/git-hooks git-hooks --bin
-#run all fresh.d post scripts
-for f in `ls ~/.dotfiles/fresh.d.post`; do
-  bash ~/.dotfiles/fresh.d.post/$f
-done
-
 fresh_after_build() {
   # make tmux plugin executable
   chmod 500 ~/.tmux/plugins/tpm/tpm
+
+  #run all fresh.d post scripts
+  for f in `ls ~/.dotfiles/fresh.d.post`; do
+    bash ~/.dotfiles/fresh.d.post/$f
+  done
 }
