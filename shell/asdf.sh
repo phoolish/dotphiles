@@ -1,3 +1,1 @@
-export PATH="$HOME/.asdf/bin:$PATH"
-eval "$(asdf exec direnv hook bash)"
-
+. $HOME/.asdf/asdf.sh

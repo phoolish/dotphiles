@@ -5,7 +5,6 @@ python 3.8.3
 terraform 0.12.26
 yq 3.3.0
 eksctl 0.21.0
-direnv 2.21.3
 sops 3.4.0
 github-cli 0.11.0
 nodejs 14.6.0
