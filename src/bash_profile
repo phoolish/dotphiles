@@ -1,6 +1,9 @@
 # Get the aliases and functions
-if [ -f ~/.bashrc ]; then
-        . ~/.bashrc
+
+if [[ "$(uname)" == "Darwin" ]]; then
+  if [ -f ~/.bashrc ]; then
+    . ~/.bashrc
+  fi
 fi
 
 [[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
