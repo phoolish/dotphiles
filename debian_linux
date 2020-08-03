@@ -4,6 +4,7 @@ apt_install() {
 
 apt_install git
 apt_install vim
+apt_install direnv
 
 
 # GUI Stuff

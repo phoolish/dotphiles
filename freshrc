@@ -50,6 +50,8 @@ fresh src/sshrc --file=~/.ssh/rc
 # asdf
 fresh src/asdfrc --file
 
+fresh src/direnvrc --file=~/.config/direnv/direnvrc
+
 # gemrc
 fresh src/gemrc --file
 
