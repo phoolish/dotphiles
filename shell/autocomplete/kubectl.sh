@@ -5,5 +5,6 @@ if [[ "$(uname)" == "Darwin" ]]; then
 else
   if [[  -f "$HOME/.asdf/shims/kubectl" ]]; then
     source <($HOME/.asdf/shims/kubectl completion bash)
+    source <($HOME/.asdf/shims/kubectl completion bash | sed 's/kubectl/k/g')
   fi
 fi
