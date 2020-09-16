@@ -5,6 +5,9 @@ apt_install() {
 apt_install git
 apt_install vim
 apt_install direnv
+apt_install libsqlite3-dev
+apt_install libbz2-dev
+apt_install libreadline-dev
 
 
 # GUI Stuff
