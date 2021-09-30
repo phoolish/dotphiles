@@ -64,6 +64,8 @@ if [[ "$(uname)" != "Darwin" ]]; then
   fresh RicardoEPRodrigues/Linux-Magic-Trackpad-2-Driver . --file=vendor/linux-magic-trackpad-2-driver/
 fi
 
+mkdir -p ~/.bashrc.d
+
 fresh_after_build() {
   # make tmux plugin executable
   chmod 500 ~/.tmux/plugins/tpm/tpm

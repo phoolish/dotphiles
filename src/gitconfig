@@ -35,6 +35,7 @@
   # Alias checkout so that we can use better autocompletion of branches
   # https://gist.github.com/mmrko/b3ec6da9bea172cdb6bd83bdf95ee817
   checkoutr = "!git checkout"
+  pull-request = "!gh pr create"
 
 [merge]
   tool = vimdiff

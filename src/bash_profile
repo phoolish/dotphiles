@@ -8,6 +8,7 @@ fi
 
 [[ -s "$HOME/.profile" ]] && source "$HOME/.profile"
 
+
 command -v keychain  >/dev/null 2>&1 && eval $(keychain --eval --quiet --confhost)
 # http://unix.stackexchange.com/a/90869
 # Add ssh keys on login

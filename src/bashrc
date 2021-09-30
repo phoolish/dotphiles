@@ -11,3 +11,5 @@ if [ -d $HOME/.bashrc.d ]; then
     source $f
   done
 fi
+# Created by `userpath` on 2021-02-11 22:02:52
+export PATH="$PATH:/home/lphilbrook/.local/bin"
