@@ -1,2 +1,4 @@
 [core]
   pager = "/usr/local/share/git-core/contrib/diff-highlight/diff-highlight | /usr/bin/less -RciqMSj5"
+[credentials]
+  helper = osxkeychain
